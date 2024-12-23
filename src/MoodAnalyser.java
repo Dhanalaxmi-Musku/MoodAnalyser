@@ -10,10 +10,13 @@ public class MoodAnalyser {
         this.message = message;
     }
 
-    public String analyseMood() {
+    public String analyseMood() throws MoodAnalysisException {
         try {
-            if (message == null || message.isEmpty()) {
-                return "HAPPY";
+            if (message == null) {
+                throw new MoodAnalysisException(MoodAnalysisException.ErrorType.NULL, "Mood cannot be null");
+            }
+            if (message.isEmpty()) {
+                throw new MoodAnalysisException(MoodAnalysisException.ErrorType.EMPTY, "Mood cannot be empty");
             }
             if (message.contains("Sad")) {
                 return "SAD";
@@ -21,18 +24,29 @@ public class MoodAnalyser {
                 return "HAPPY";
             }
         } catch (Exception e) {
-            return "HAPPY";
+            throw new MoodAnalysisException(MoodAnalysisException.ErrorType.NULL, "Unexpected error occurred");
         }
     }
 
     public static void main(String[] args) {
-        MoodAnalyser moodAnalyser1 = new MoodAnalyser("I am in Sad Mood");
-        System.out.println(moodAnalyser1.analyseMood()); // SAD
+        try {
+            MoodAnalyser moodAnalyser1 = new MoodAnalyser("I am in Sad Mood");
+            System.out.println(moodAnalyser1.analyseMood()); // SAD
 
-        MoodAnalyser moodAnalyser2 = new MoodAnalyser("I am in Any Mood");
-        System.out.println(moodAnalyser2.analyseMood()); // HAPPY
+            MoodAnalyser moodAnalyser2 = new MoodAnalyser("I am in Any Mood");
+            System.out.println(moodAnalyser2.analyseMood()); // HAPPY
 
-        MoodAnalyser moodAnalyser3 = new MoodAnalyser(null);
-        System.out.println(moodAnalyser3.analyseMood()); // HAPPY
+            MoodAnalyser moodAnalyser3 = new MoodAnalyser(null);
+            System.out.println(moodAnalyser3.analyseMood());
+        } catch (MoodAnalysisException e) {
+            System.out.println("Error: " + e.getMessage() + " - Type: " + e.getErrorType());
+        }
+
+        try {
+            MoodAnalyser moodAnalyser4 = new MoodAnalyser("");
+            System.out.println(moodAnalyser4.analyseMood());
+        } catch (MoodAnalysisException e) {
+            System.out.println("Error: " + e.getMessage() + " - Type: " + e.getErrorType());
+        }
     }
 }
