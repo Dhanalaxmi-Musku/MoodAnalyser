@@ -1,5 +1,12 @@
 public class MoodAnalyser {
-    public String analyseMood(String message) {
+    private String message;
+    public MoodAnalyser() {
+    }
+    public MoodAnalyser(String message) {
+        this.message = message;
+    }
+
+    public String analyseMood() {
         if (message.contains("Sad")) {
             return "SAD";
         } else {
@@ -8,8 +15,10 @@ public class MoodAnalyser {
     }
 
     public static void main(String[] args) {
-        MoodAnalyser moodAnalyser = new MoodAnalyser();
-        System.out.println(moodAnalyser.analyseMood("I am in Sad Mood")); // SAD
-        System.out.println(moodAnalyser.analyseMood("I am in Any Mood")); // HAPPY
+        MoodAnalyser moodAnalyser1 = new MoodAnalyser("I am in Sad Mood");
+        System.out.println(moodAnalyser1.analyseMood()); // SAD
+
+        MoodAnalyser moodAnalyser2 = new MoodAnalyser("I am in Any Mood");
+        System.out.println(moodAnalyser2.analyseMood()); // HAPPY
     }
 }
